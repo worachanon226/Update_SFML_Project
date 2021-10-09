@@ -52,7 +52,7 @@ Game::Game(RenderWindow* window, View& view){
 	this->players.push_back(Player(&playerTexture, &bulletTexture, Vector2u(4, 4), 0.2f, Vector2f(250.0f, 275.0f), 10, 10, 1, 1, 25));
 
 	//Init Enemy
-	this->MaxTimeSpawnEnemy = 2.0f;
+	this->MaxTimeSpawnEnemy = 4.5f;
 	this->NowTimeSpawnEnemy = 0;
 #pragma endregion
 
@@ -247,7 +247,8 @@ void Game::Update(float deltatime)
 
 	if (isAlive == 1) {
 		NowTimeSpawnEnemy += deltatime;
-		MaxTimeSpawnEnemy -= deltatime * 0.01f;
+		MaxTimeSpawnEnemy -= deltatime * 0.05f;
+		if (MaxTimeSpawnEnemy < 0.3f) MaxTimeSpawnEnemy = 0.3f;
 		if (NowTimeSpawnEnemy >= MaxTimeSpawnEnemy) {
 
 			int randtype = rand() % 2 + 1;
@@ -541,4 +542,6 @@ void Game::ResetGame()
 	this->UsingTimeBox = 0;
 	this->DelaytimeSpawn = 0;
 	this->DelaytimeDel = 0;
+
+	this->MaxTimeSpawnEnemy = 4.5f;
 }
