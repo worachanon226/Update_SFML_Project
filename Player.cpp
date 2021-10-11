@@ -61,12 +61,10 @@ void Player::Movement(float speed)
 	if (CheckMap.y > 545) chb = 1;
 	else chb = 0;
 
-	/*
 	if (Keyboard::isKeyPressed(Keyboard::LShift)) 
 	{
-		speed *= 2;
+		speed *= 1.5;
 	}
-	*/
 
 	if (Keyboard::isKeyPressed(Keyboard::W) && cht == 0) 
 	{
