@@ -35,7 +35,7 @@ private:
 
 	Sound attackSound;
 
-
+	Color color;
 
 public:
 	Player(Texture* texture, Texture* bulletTexture,Vector2u imagecnt, float switchtime, Vector2f position, 
@@ -54,6 +54,8 @@ public:
 	inline const Vector2f& getPosition()const { return this->sprite.getPosition(); }
 	inline const FloatRect& getGlobalBounds()const { return this->sprite.getGlobalBounds(); }
 	
+	void SetColorOpa() { this->sprite.setColor(Color(255, 255, 255, 100)); }
+	void SetColor() { this->sprite.setColor(Color(255, 255, 255, 225)); }
 	void Draw(RenderWindow& window);
 
 	static unsigned players;

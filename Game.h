@@ -7,6 +7,27 @@
 class Game
 {
 private:
+	//Skill
+	Texture skillBoxTex;
+
+		//Skill_1
+		bool usingSkill_1;
+		float skill_1TimeNow;
+		Text cd_skill_1_Text;
+		Sprite skillBox1;
+		Texture skill_1Tex;
+		Sprite skill_1;
+
+		//Skill_2
+		bool usingSkill_2;
+		float skill_2TimeNow;
+		Text cd_skill_2_Text;
+		Sprite skillBox2;
+		Texture skill_2Tex;
+		Sprite skill_2;
+
+
+
 	Vector2f PlayerPosition;
 
 	//Pause

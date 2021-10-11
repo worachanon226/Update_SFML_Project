@@ -8,6 +8,11 @@ Game::Game(RenderWindow* window, View& view){
 	this->window->setFramerateLimit(60);
 	this->IsPause = 0;
 
+	this->skill_1TimeNow = 6.f;
+	this->skill_2TimeNow = 11.f;
+	this->usingSkill_1 = false;
+	this->usingSkill_2 = false;
+
 #pragma region UI
 	this->pause_buttontex.loadFromFile("Texture/Box/Pause.png");
 	this->pause_button.setTexture(pause_buttontex);
@@ -18,6 +23,36 @@ Game::Game(RenderWindow* window, View& view){
 	this->playerNameBack.setTexture(playerNameBackTex);
 	this->playerNameBack.setOrigin(playerNameBackTex.getSize().x / 2.0f, playerNameBackTex.getSize().y / 2.0f);
 	this->playerNameBack.setScale(2.2f, 1.5f);
+
+	this->skillBoxTex.loadFromFile("Texture/Box/Skill_Box.png");
+
+	this->skillBox1.setTexture(skillBoxTex);
+	this->skillBox1.setOrigin(skillBoxTex.getSize().x / 2.f, skillBoxTex.getSize().y / 2.f);
+	this->skillBox1.setScale(0.35f, 0.35f);
+
+	this->skillBox2.setTexture(skillBoxTex);
+	this->skillBox2.setOrigin(skillBoxTex.getSize().x / 2.f, skillBoxTex.getSize().y / 2.f);
+	this->skillBox2.setScale(0.35f, 0.35f);
+
+	this->skill_1Tex.loadFromFile("Texture/Box/Skill_1.png");
+	this->skill_1.setTexture(skill_1Tex);
+	this->skill_1.setOrigin(skill_1Tex.getSize().x / 2.f, skill_1Tex.getSize().y / 2.f);
+	this->skill_1.setScale(0.35f, 0.35f);
+
+	this->skill_2Tex.loadFromFile("Texture/Box/Skill_2.png");
+	this->skill_2.setTexture(skill_2Tex);
+	this->skill_2.setOrigin(skill_2Tex.getSize().x / 2.f, skill_2Tex.getSize().y / 2.f);
+	this->skill_2.setScale(0.35f, 0.35f);
+
+	this->cd_skill_1_Text.setFont(font_Pixeboy);
+	this->cd_skill_1_Text.setFillColor(Color::Black);
+	this->cd_skill_1_Text.setCharacterSize(1000);
+	this->cd_skill_1_Text.setScale(0.035f, 0.035f);
+
+	this->cd_skill_2_Text.setFont(font_Pixeboy);
+	this->cd_skill_2_Text.setFillColor(Color::Black);
+	this->cd_skill_2_Text.setCharacterSize(1000);
+	this->cd_skill_2_Text.setScale(0.035f, 0.035f);
 #pragma endregion
 
 #pragma region Init Texture
@@ -201,7 +236,19 @@ void Game::UpdateUI(int i,int j)
 		this->playerNameText.setOrigin(playerNameText.getLocalBounds().width / 2, playerNameText.getLocalBounds().height / 2);
 		this->playerNameText.setPosition(playerNameBack.getPosition().x, playerNameBack.getPosition().y - 14.0f);
 
-		
+		this->skillBox1.setPosition(players[i].getPosition().x - 400.0f,players[i].getPosition().y + 215.0f);
+		this->skill_1.setPosition(skillBox1.getPosition());
+
+		this->skillBox2.setPosition(players[i].getPosition().x - 325.0f, players[i].getPosition().y + 215.0f);
+		this->skill_2.setPosition(skillBox2.getPosition());
+
+		this->cd_skill_1_Text.setString(to_string(int(skill_1TimeNow)));
+		this->cd_skill_1_Text.setOrigin(cd_skill_1_Text.getLocalBounds().width / 2.f, cd_skill_1_Text.getLocalBounds().height / 2.f);
+		this->cd_skill_1_Text.setPosition(players[i].getPosition().x - 400.0f, players[i].getPosition().y + 200.0f);
+
+		this->cd_skill_2_Text.setString(to_string(int(skill_2TimeNow)));
+		this->cd_skill_2_Text.setOrigin(cd_skill_2_Text.getLocalBounds().width / 2.f, cd_skill_2_Text.getLocalBounds().height / 2.f);
+		this->cd_skill_2_Text.setPosition(players[i].getPosition().x - 325.0f, players[i].getPosition().y + 200.0f);
 	}
 }
 
@@ -246,7 +293,30 @@ void Game::Update(float deltatime)
 	//cout << view.getSize().x << " " << view.getSize().y << endl;
 
 	if (isAlive == 1) {
-		NowTimeSpawnEnemy += deltatime;
+
+		if (Keyboard::isKeyPressed(Keyboard::Q) && !usingSkill_1) usingSkill_1 = true;
+		if (usingSkill_1) {
+			this->skill_1.setColor(Color(255, 255, 255, 50));
+			skill_1TimeNow -= deltatime;
+			if (skill_1TimeNow <= 0) {
+				skill_1TimeNow = 6.f;
+				this->skill_1.setColor(Color(255, 255, 255, 225));
+				usingSkill_1 = false;
+			}
+		}
+
+		if (Keyboard::isKeyPressed(Keyboard::E) && !usingSkill_2) usingSkill_2 = true;
+		if (usingSkill_2) {
+			this->skill_2.setColor(Color(255, 255, 255, 50));
+			skill_2TimeNow -= deltatime;
+			if (skill_2TimeNow <= 0) {
+				skill_2TimeNow = 11.f;
+				this->skill_2.setColor(Color(255, 255, 255, 225));
+				usingSkill_2 = false;
+			}
+		}
+
+		if (!usingSkill_2) NowTimeSpawnEnemy += deltatime;
 		MaxTimeSpawnEnemy -= deltatime * 0.05f;
 		if (MaxTimeSpawnEnemy < 0.3f) MaxTimeSpawnEnemy = 0.3f;
 		if (NowTimeSpawnEnemy >= MaxTimeSpawnEnemy) {
@@ -329,9 +399,9 @@ void Game::Update(float deltatime)
 		//All Character
 		for (size_t i = 0; i < this->players.size(); i++) {
 
-			if (players[i].gethp() <= 0) {
-				isAlive = 0;
-			}
+			if (players[i].gethp() <= 0) isAlive = 0;
+			if (usingSkill_1) players[i].SetColorOpa();
+			else players[i].SetColor();
 
 			//Player Update
 			this->players[i].Update(this->window->getSize(), deltatime);
@@ -393,7 +463,8 @@ void Game::Update(float deltatime)
 
 			//Enemy Update
 			for (int j = 0; j < this->enemies.size(); j++) {
-				this->enemies[j].Update(players[i].getPosition(), deltatime);
+				
+				if (!usingSkill_2) this->enemies[j].Update(players[i].getPosition(), deltatime);
 
 				//Update Score
 				if (enemies[j].getHp() <= 0) {
@@ -405,7 +476,7 @@ void Game::Update(float deltatime)
 					break;
 				}
 
-				if (players[i].getGlobalBounds().intersects(enemies[j].getGlobalBounds())) {
+				if (players[i].getGlobalBounds().intersects(enemies[j].getGlobalBounds()) && !usingSkill_1) {
 					this->players.push_back(Player(&playerTexture, &bulletTexture, Vector2u(4, 4), 0.2f, players[i].getPosition(), players[i].gethp() - enemies[j].getDamage(), 10, 0, 1, players[i].getShootTimerMax()));
 					this->players.erase(this->players.begin() + i);
 					this->enemies.erase(this->enemies.begin() + j);
@@ -499,6 +570,14 @@ void Game::Draw(RenderWindow &window)
 		this->window->draw(this->playerNameBack);
 
 		this->window->draw(this->playerNameText);
+
+		this->window->draw(this->skillBox1);
+		this->window->draw(this->skillBox2);
+		this->window->draw(this->skill_1);
+		this->window->draw(this->skill_2);
+
+		if (usingSkill_1) this->window->draw(this->cd_skill_1_Text);
+		if (usingSkill_2) this->window->draw(this->cd_skill_2_Text);
 
 		if (isAlive == 1) this->window->draw(this->mouseCursor);
 	}

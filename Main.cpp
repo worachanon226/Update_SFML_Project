@@ -15,14 +15,14 @@ int main()
     float deltatime = 0.0f;
     
     SoundBuffer mainBuffer, gameBuffer;
-    mainBuffer.loadFromFile("Sound/Mainmenu.wav");
-    gameBuffer.loadFromFile("Sound/PlayGame.wav");
+    //mainBuffer.loadFromFile("Sound/Mainmenu.wav");
+    //gameBuffer.loadFromFile("Sound/PlayGame.wav");
 
     Sound mainSound, gameSound;
-    mainSound.setBuffer(mainBuffer);
-    mainSound.setVolume(10);
-    gameSound.setBuffer(gameBuffer);
-    gameSound.setVolume(10);
+    //mainSound.setBuffer(mainBuffer);
+    //mainSound.setVolume(10);
+    //gameSound.setBuffer(gameBuffer);
+    //gameSound.setVolume(10);
 
     Clock clock;
     Game game(&window,view);
