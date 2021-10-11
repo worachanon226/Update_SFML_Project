@@ -8,10 +8,19 @@ Game::Game(RenderWindow* window, View& view){
 	this->window->setFramerateLimit(60);
 	this->IsPause = 0;
 
-	this->skill_1TimeNow = 6.f;
-	this->skill_2TimeNow = 11.f;
+	this->skill_1TimeNow = 11.f;
+	this->skill_2TimeNow = 16.f;
+	this->skill_3TimeNow = 61.f;
+
 	this->usingSkill_1 = false;
 	this->usingSkill_2 = false;
+	this->usingSkill_3 = false;
+
+	this->pressSkill_1 = false;
+	this->pressSkill_2 = false;
+	this->pressSkill_3 = false;
+
+	this->isBlackchole = false;
 
 #pragma region UI
 	this->pause_buttontex.loadFromFile("Texture/Box/Pause.png");
@@ -34,6 +43,10 @@ Game::Game(RenderWindow* window, View& view){
 	this->skillBox2.setOrigin(skillBoxTex.getSize().x / 2.f, skillBoxTex.getSize().y / 2.f);
 	this->skillBox2.setScale(0.35f, 0.35f);
 
+	this->skillBox3.setTexture(skillBoxTex);
+	this->skillBox3.setOrigin(skillBoxTex.getSize().x / 2.f, skillBoxTex.getSize().y / 2.f);
+	this->skillBox3.setScale(0.35f, 0.35f);
+
 	this->skill_1Tex.loadFromFile("Texture/Box/Skill_1.png");
 	this->skill_1.setTexture(skill_1Tex);
 	this->skill_1.setOrigin(skill_1Tex.getSize().x / 2.f, skill_1Tex.getSize().y / 2.f);
@@ -44,6 +57,14 @@ Game::Game(RenderWindow* window, View& view){
 	this->skill_2.setOrigin(skill_2Tex.getSize().x / 2.f, skill_2Tex.getSize().y / 2.f);
 	this->skill_2.setScale(0.35f, 0.35f);
 
+	this->skill_3Tex.loadFromFile("Texture/Box/Skill_3.png");
+	this->skill_3.setTexture(skill_3Tex);
+	this->skill_3.setOrigin(skill_3Tex.getSize().x / 2.f, skill_3Tex.getSize().y / 2.f);
+	this->skill_3.setScale(0.35f, 0.35f);
+
+	this->blackhole.setTexture(skill_3Tex);
+	this->blackhole.setOrigin(skill_3Tex.getSize().x / 2.f, skill_3Tex.getSize().y / 2.f);
+
 	this->cd_skill_1_Text.setFont(font_Pixeboy);
 	this->cd_skill_1_Text.setFillColor(Color::Black);
 	this->cd_skill_1_Text.setCharacterSize(1000);
@@ -53,6 +74,12 @@ Game::Game(RenderWindow* window, View& view){
 	this->cd_skill_2_Text.setFillColor(Color::Black);
 	this->cd_skill_2_Text.setCharacterSize(1000);
 	this->cd_skill_2_Text.setScale(0.035f, 0.035f);
+
+	this->cd_skill_3_Text.setFont(font_Pixeboy);
+	this->cd_skill_3_Text.setFillColor(Color::Black);
+	this->cd_skill_3_Text.setCharacterSize(1000);
+	this->cd_skill_3_Text.setScale(0.035f, 0.035f);
+
 #pragma endregion
 
 #pragma region Init Texture
@@ -242,6 +269,9 @@ void Game::UpdateUI(int i,int j)
 		this->skillBox2.setPosition(players[i].getPosition().x - 325.0f, players[i].getPosition().y + 215.0f);
 		this->skill_2.setPosition(skillBox2.getPosition());
 
+		this->skillBox3.setPosition(players[i].getPosition().x - 250.0f, players[i].getPosition().y + 215.0f);
+		this->skill_3.setPosition(skillBox3.getPosition());
+
 		this->cd_skill_1_Text.setString(to_string(int(skill_1TimeNow)));
 		this->cd_skill_1_Text.setOrigin(cd_skill_1_Text.getLocalBounds().width / 2.f, cd_skill_1_Text.getLocalBounds().height / 2.f);
 		this->cd_skill_1_Text.setPosition(players[i].getPosition().x - 400.0f, players[i].getPosition().y + 200.0f);
@@ -249,6 +279,10 @@ void Game::UpdateUI(int i,int j)
 		this->cd_skill_2_Text.setString(to_string(int(skill_2TimeNow)));
 		this->cd_skill_2_Text.setOrigin(cd_skill_2_Text.getLocalBounds().width / 2.f, cd_skill_2_Text.getLocalBounds().height / 2.f);
 		this->cd_skill_2_Text.setPosition(players[i].getPosition().x - 325.0f, players[i].getPosition().y + 200.0f);
+
+		this->cd_skill_3_Text.setString(to_string(int(skill_3TimeNow)));
+		this->cd_skill_3_Text.setOrigin(cd_skill_3_Text.getLocalBounds().width / 2.f, cd_skill_3_Text.getLocalBounds().height / 2.f);
+		this->cd_skill_3_Text.setPosition(players[i].getPosition().x - 250.0f, players[i].getPosition().y + 200.0f);
 	}
 }
 
@@ -294,25 +328,48 @@ void Game::Update(float deltatime)
 
 	if (isAlive == 1) {
 
-		if (Keyboard::isKeyPressed(Keyboard::Q) && !usingSkill_1) usingSkill_1 = true;
-		if (usingSkill_1) {
+		if (Keyboard::isKeyPressed(Keyboard::Q) && !pressSkill_1) pressSkill_1 = true;
+		if (pressSkill_1) {
 			this->skill_1.setColor(Color(255, 255, 255, 50));
 			skill_1TimeNow -= deltatime;
+
+			if (skill_1TimeNow <= 5) usingSkill_1 = false;
+			else usingSkill_1 = true;
+
 			if (skill_1TimeNow <= 0) {
-				skill_1TimeNow = 6.f;
+				skill_1TimeNow = 16.f;
 				this->skill_1.setColor(Color(255, 255, 255, 225));
-				usingSkill_1 = false;
+				pressSkill_1 = false;
 			}
 		}
 
-		if (Keyboard::isKeyPressed(Keyboard::E) && !usingSkill_2) usingSkill_2 = true;
-		if (usingSkill_2) {
+		if (Keyboard::isKeyPressed(Keyboard::E) && !pressSkill_2) pressSkill_2 = true;
+		if (pressSkill_2) {
 			this->skill_2.setColor(Color(255, 255, 255, 50));
 			skill_2TimeNow -= deltatime;
+
+			if (skill_2TimeNow <= 13) usingSkill_2 = false;
+			else usingSkill_2 = true;
+
 			if (skill_2TimeNow <= 0) {
-				skill_2TimeNow = 11.f;
+				skill_2TimeNow = 16.f;
 				this->skill_2.setColor(Color(255, 255, 255, 225));
-				usingSkill_2 = false;
+				pressSkill_2 = false;
+			}
+		}
+
+		if (Keyboard::isKeyPressed(Keyboard::R) && !pressSkill_3) pressSkill_3 = true;
+		if (pressSkill_3) {
+			this->skill_3.setColor(Color(255, 255, 255, 50));
+			skill_3TimeNow -= deltatime;
+
+			if (skill_3TimeNow <= 60.9) usingSkill_3 = false;
+			else usingSkill_3 = true;
+
+			if (skill_3TimeNow <= 0) {
+				skill_3TimeNow = 61.f;
+				this->skill_3.setColor(Color(255, 255, 255, 225));
+				pressSkill_3 = false;
 			}
 		}
 
@@ -396,12 +453,33 @@ void Game::Update(float deltatime)
 			}
 		}
 
+		if (usingSkill_3) enemies.clear();
+
 		//All Character
 		for (size_t i = 0; i < this->players.size(); i++) {
 
 			if (players[i].gethp() <= 0) isAlive = 0;
 			if (usingSkill_1) players[i].SetColorOpa();
 			else players[i].SetColor();
+
+			if (usingSkill_3) {
+				enemies.clear();
+				this->players.push_back(Player(&playerTexture, &bulletTexture, Vector2u(4, 4), 0.2f, players[i].getPosition(), 10, 10, 1, 1, players[i].getShootTimerMax()));
+				blackhole.setPosition(players[i].getPosition());
+				this->players.erase(this->players.begin() + i);
+				isBlackchole = true;
+				usingSkill_3 = false;
+			}
+
+			if (isBlackchole) {
+				blackhole.rotate(500.f * deltatime);
+				blackhole.setScale(blackhole.getScale().x - (deltatime * 10.f), blackhole.getScale().y - (deltatime * 10.f));
+				cout << blackhole.getScale().x - (deltatime * 10.f) << endl;
+				if (blackhole.getScale().x - (deltatime * 10.f) <= -8) {
+					isBlackchole = false;
+					blackhole.setScale(1, 1);
+				}
+			}
 
 			//Player Update
 			this->players[i].Update(this->window->getSize(), deltatime);
@@ -573,11 +651,17 @@ void Game::Draw(RenderWindow &window)
 
 		this->window->draw(this->skillBox1);
 		this->window->draw(this->skillBox2);
+		this->window->draw(this->skillBox3);
+
 		this->window->draw(this->skill_1);
 		this->window->draw(this->skill_2);
+		this->window->draw(this->skill_3);
 
-		if (usingSkill_1) this->window->draw(this->cd_skill_1_Text);
-		if (usingSkill_2) this->window->draw(this->cd_skill_2_Text);
+		if(isBlackchole) this->window->draw(this->blackhole);
+
+		if (pressSkill_1) this->window->draw(this->cd_skill_1_Text);
+		if (pressSkill_2) this->window->draw(this->cd_skill_2_Text);
+		if (pressSkill_3) this->window->draw(this->cd_skill_3_Text);
 
 		if (isAlive == 1) this->window->draw(this->mouseCursor);
 	}
@@ -623,4 +707,22 @@ void Game::ResetGame()
 	this->DelaytimeDel = 0;
 
 	this->MaxTimeSpawnEnemy = 4.5f;
+
+	this->skill_1TimeNow = 11.f;
+	this->skill_2TimeNow = 16.f;
+	this->skill_3TimeNow = 61.f;
+
+	this->usingSkill_1 = false;
+	this->usingSkill_2 = false;
+	this->usingSkill_3 = false;
+
+	this->pressSkill_1 = false;
+	this->pressSkill_2 = false;
+	this->pressSkill_3 = false;
+
+	this->skill_1.setColor(Color(255, 255, 255, 225));
+	this->skill_2.setColor(Color(255, 255, 255, 225));
+	this->skill_3.setColor(Color(255, 255, 255, 225));
+
+	this->isBlackchole = false;
 }

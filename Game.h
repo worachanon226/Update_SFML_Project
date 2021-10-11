@@ -12,7 +12,9 @@ private:
 
 		//Skill_1
 		bool usingSkill_1;
+		bool pressSkill_1;
 		float skill_1TimeNow;
+		float skill_1CD;
 		Text cd_skill_1_Text;
 		Sprite skillBox1;
 		Texture skill_1Tex;
@@ -20,11 +22,23 @@ private:
 
 		//Skill_2
 		bool usingSkill_2;
+		bool pressSkill_2;
 		float skill_2TimeNow;
 		Text cd_skill_2_Text;
 		Sprite skillBox2;
 		Texture skill_2Tex;
 		Sprite skill_2;
+
+		//Skill_3
+		bool usingSkill_3;
+		bool pressSkill_3;
+		float skill_3TimeNow;
+		Text cd_skill_3_Text;
+		Sprite skillBox3;
+		Texture skill_3Tex;
+		Sprite skill_3;
+		Sprite blackhole;
+		bool isBlackchole;
 
 
 
