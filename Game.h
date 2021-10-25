@@ -1,16 +1,31 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS 1
 #include "Player.h"
 #include "Enemy.h"
 #include "ScoreBoard.h"
 #include "Background.h"
+#include <time.h> 
 #include <SFML/Audio.hpp>
 class Game
 {
 private:
+	Text localTime;
+
+	//Lock
+	Texture Lock_Tex;
+	Sprite Lock1;
+	Sprite Lock2;
+	Sprite Lock3;
+
+	Text Lock1_Text;
+	Text Lock2_Text;
+	Text Lock3_Text;
+
 	//Skill
 	Texture skillBoxTex;
 
 		//Skill_1
+		Text skill_q;
 		bool usingSkill_1;
 		bool pressSkill_1;
 		float skill_1TimeNow;
@@ -21,6 +36,7 @@ private:
 		Sprite skill_1;
 
 		//Skill_2
+		Text skill_e;
 		bool usingSkill_2;
 		bool pressSkill_2;
 		float skill_2TimeNow;
@@ -30,6 +46,7 @@ private:
 		Sprite skill_2;
 
 		//Skill_3
+		Text skill_r;
 		bool usingSkill_3;
 		bool pressSkill_3;
 		float skill_3TimeNow;

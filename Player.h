@@ -4,6 +4,8 @@
 class Player
 {
 private:
+	int lvl;
+
 	unsigned playerNr;
 
 	int shootTimer;
@@ -57,6 +59,8 @@ public:
 	void SetColorOpa() { this->sprite.setColor(Color(255, 255, 255, 100)); }
 	void SetColor() { this->sprite.setColor(Color(255, 255, 255, 225)); }
 	void Draw(RenderWindow& window);
+
+	int Getlvl() { return this->lvl; }
 
 	static unsigned players;
 

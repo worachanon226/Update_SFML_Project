@@ -6,6 +6,8 @@ unsigned Player::players = 0;
 Player::Player(Texture *texture,Texture *bulletTexture,Vector2u imagecnt,float switchtime,
 	Vector2f position, int hp, int hpMax, int scoremul, int damage, int shootTimerMax)
 {
+	this->lvl = 1;
+
 	this->texture = texture;
 	this->bulletTexture = bulletTexture;
 

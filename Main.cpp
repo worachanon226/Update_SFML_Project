@@ -44,11 +44,11 @@ int main()
         Event event;
         while (window.pollEvent(event)) {
             if (event.type == Event::Closed) window.close();
-            if (event.type == Event::GainedFocus) Focus = true;
-            if (event.type == Event::LostFocus) Focus = false;
+            ///if (event.type == Event::GainedFocus) Focus = true;
+            //if (event.type == Event::LostFocus) Focus = false;
         }
 
-        if (Focus == true) {
+        //if (Focus == true) {
 
             if (MenuGame == true && PauseGame == true) {
                 if (!playMainSound) { mainSound.play(); mainSound.setLoop(true); playMainSound = true; }
@@ -111,7 +111,7 @@ int main()
                     MenuGame = true;  PauseGame = true;
                 }
             }
-        }
+        //}
     }
     return 0;
 }

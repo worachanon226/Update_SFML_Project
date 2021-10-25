@@ -26,6 +26,7 @@ Mainmenu::Mainmenu(RenderWindow* window, View& view)
 	this->wallpaper.setPosition(640.0f, 360.0f);
 
 	#pragma region Button
+
 	//Mainmenu_Play
 	this->Mainmenu_PlayTex.loadFromFile("Texture/Box/Mainmenu_Play.png");
 	this->Mainmenu_Play.setTexture(Mainmenu_PlayTex);
@@ -204,6 +205,7 @@ void Mainmenu::Draw(RenderWindow& window)
 	this->window->draw(Mainmenu_Leader);
 	this->window->draw(Mainmenu_Quit);
 	this->window->draw(mainmenu_text);
+
 
 	//Text
 	this->window->draw(Play_text);

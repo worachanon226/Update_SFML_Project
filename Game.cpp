@@ -2,7 +2,7 @@
 
 Background background;
 
-Game::Game(RenderWindow* window, View& view){
+Game::Game(RenderWindow* window, View& view) {
 	this->window = window;
 	this->view = view;
 	this->window->setFramerateLimit(60);
@@ -70,15 +70,67 @@ Game::Game(RenderWindow* window, View& view){
 	this->cd_skill_1_Text.setCharacterSize(1000);
 	this->cd_skill_1_Text.setScale(0.035f, 0.035f);
 
+	this->skill_q.setString("Q");
+	this->skill_q.setFont(font_Pixeboy);
+	this->skill_q.setFillColor(Color::Black);
+	this->skill_q.setCharacterSize(1000);
+	this->skill_q.setScale(0.035f, 0.035f);
+
 	this->cd_skill_2_Text.setFont(font_Pixeboy);
 	this->cd_skill_2_Text.setFillColor(Color::Black);
 	this->cd_skill_2_Text.setCharacterSize(1000);
 	this->cd_skill_2_Text.setScale(0.035f, 0.035f);
 
+	this->skill_e.setString("E");
+	this->skill_e.setFont(font_Pixeboy);
+	this->skill_e.setFillColor(Color::Black);
+	this->skill_e.setCharacterSize(1000);
+	this->skill_e.setScale(0.035f, 0.035f);
+
 	this->cd_skill_3_Text.setFont(font_Pixeboy);
 	this->cd_skill_3_Text.setFillColor(Color::Black);
 	this->cd_skill_3_Text.setCharacterSize(1000);
 	this->cd_skill_3_Text.setScale(0.035f, 0.035f);
+
+	this->skill_r.setString("R");
+	this->skill_r.setFont(font_Pixeboy);
+	this->skill_r.setFillColor(Color::Black);
+	this->skill_r.setCharacterSize(1000);
+	this->skill_r.setScale(0.035f, 0.035f);
+
+	this->localTime.setFont(font_Pixeboy);
+	this->localTime.setFillColor(Color::Black);
+	this->localTime.setCharacterSize(1000);
+	this->localTime.setScale(0.025f, 0.025f);
+
+	this->Lock1_Text.setFont(font_Pixeboy);
+	this->Lock1_Text.setFillColor(Color::Black);
+	this->Lock1_Text.setCharacterSize(1000);
+	this->Lock1_Text.setScale(0.015f, 0.015f);
+
+	this->Lock2_Text.setFont(font_Pixeboy);
+	this->Lock2_Text.setFillColor(Color::Black);
+	this->Lock2_Text.setCharacterSize(1000);
+	this->Lock2_Text.setScale(0.015f, 0.015f);
+
+	this->Lock3_Text.setFont(font_Pixeboy);
+	this->Lock3_Text.setFillColor(Color::Black);
+	this->Lock3_Text.setCharacterSize(1000);
+	this->Lock3_Text.setScale(0.015f, 0.015f);
+
+	//Lock
+	this->Lock_Tex.loadFromFile("Texture/Box/Lock.png");
+	this->Lock1.setTexture(Lock_Tex);
+	this->Lock1.setOrigin(Lock_Tex.getSize().x / 2.f, Lock_Tex.getSize().y / 2.f);
+	this->Lock1.setScale(0.25f, 0.25f);
+
+	this->Lock2.setTexture(Lock_Tex);
+	this->Lock2.setOrigin(Lock_Tex.getSize().x / 2.f, Lock_Tex.getSize().y / 2.f);
+	this->Lock2.setScale(0.25f, 0.25f);
+
+	this->Lock3.setTexture(Lock_Tex);
+	this->Lock3.setOrigin(Lock_Tex.getSize().x / 2.f, Lock_Tex.getSize().y / 2.f);
+	this->Lock3.setScale(0.25f, 0.25f);
 
 #pragma endregion
 
@@ -98,6 +150,7 @@ Game::Game(RenderWindow* window, View& view){
 	this->hpBarEnemyTex.loadFromFile("Texture/Box/HPBar.png");
 
 	this->font_Pixeboy.loadFromFile("Font/Pixeboy-z8XGD.ttf");
+
 #pragma endregion
 
 #pragma region Init Score
@@ -176,7 +229,7 @@ Game::Game(RenderWindow* window, View& view){
 	this->CureBox.setTexture(&CureBoxTexture);
 	this->CureBox.setSize(Vector2f(256.0f, 256.0f));
 	this->CureBox.setOrigin(128.0f, 128.0f);
-	this->CureBox.setScale(0.1f,0.1f);
+	this->CureBox.setScale(0.1f, 0.1f);
 
 	this->BulletBox.setTexture(&BulletBoxTexture);
 	this->BulletBox.setSize(this->CureBox.getSize());
@@ -197,7 +250,7 @@ Game::Game(RenderWindow* window, View& view){
 	this->mouseCursor.setColor(Color::White);
 #pragma endregion
 
-//GameOver
+	//GameOver
 	this->gameoverTex.loadFromFile("Texture/Wallpaper/GameOver.png");
 	this->gameover.setTexture(gameoverTex);
 	this->gameover.setOrigin(gameoverTex.getSize().x / 2, gameoverTex.getSize().y / 2);
@@ -220,7 +273,7 @@ void Game::InitUI()
 {
 }
 
-void Game::UpdateUI(int i,int j)
+void Game::UpdateUI(int i, int j)
 {
 	//Enemy
 	if (j == 0) {
@@ -243,7 +296,7 @@ void Game::UpdateUI(int i,int j)
 		this->Maxhp = players[i].gethpMax(); this->hp = players[i].gethp();
 
 		this->hpBarBack.setPosition(players[i].getPosition().x, players[i].getPosition().y - 30.0f);
-		
+
 		this->hpBar.setPosition(this->hpBarBack.getPosition());
 		if (hp <= 0) hp = 0;
 		this->hpBar.setSize(Vector2f((hp * 256.0f) / Maxhp, this->hpBarBack.getSize().y));
@@ -251,7 +304,7 @@ void Game::UpdateUI(int i,int j)
 		this->gameover.setPosition(PlayerPosition);
 		this->home_button.setPosition(PlayerPosition.x, PlayerPosition.y + 120.0f);
 
-		this->pause_button.setPosition(players[i].getPosition().x + 400 , players[i].getPosition().y - 218.0f);
+		this->pause_button.setPosition(players[i].getPosition().x + 400, players[i].getPosition().y - 218.0f);
 
 		scoreback.setPosition(players[i].getPosition().x, players[i].getPosition().y - 215.0f);
 
@@ -263,7 +316,7 @@ void Game::UpdateUI(int i,int j)
 		this->playerNameText.setOrigin(playerNameText.getLocalBounds().width / 2, playerNameText.getLocalBounds().height / 2);
 		this->playerNameText.setPosition(playerNameBack.getPosition().x, playerNameBack.getPosition().y - 14.0f);
 
-		this->skillBox1.setPosition(players[i].getPosition().x - 400.0f,players[i].getPosition().y + 215.0f);
+		this->skillBox1.setPosition(players[i].getPosition().x - 400.0f, players[i].getPosition().y + 215.0f);
 		this->skill_1.setPosition(skillBox1.getPosition());
 
 		this->skillBox2.setPosition(players[i].getPosition().x - 325.0f, players[i].getPosition().y + 215.0f);
@@ -276,13 +329,48 @@ void Game::UpdateUI(int i,int j)
 		this->cd_skill_1_Text.setOrigin(cd_skill_1_Text.getLocalBounds().width / 2.f, cd_skill_1_Text.getLocalBounds().height / 2.f);
 		this->cd_skill_1_Text.setPosition(players[i].getPosition().x - 400.0f, players[i].getPosition().y + 200.0f);
 
+		this->skill_q.setOrigin(skill_q.getLocalBounds().width / 2.f, skill_q.getLocalBounds().height / 2.f);
+		this->skill_q.setPosition(players[i].getPosition().x - 400.0f, players[i].getPosition().y + 150.0f);
+
 		this->cd_skill_2_Text.setString(to_string(int(skill_2TimeNow)));
 		this->cd_skill_2_Text.setOrigin(cd_skill_2_Text.getLocalBounds().width / 2.f, cd_skill_2_Text.getLocalBounds().height / 2.f);
 		this->cd_skill_2_Text.setPosition(players[i].getPosition().x - 325.0f, players[i].getPosition().y + 200.0f);
 
+		this->skill_e.setOrigin(skill_q.getLocalBounds().width / 2.f, skill_q.getLocalBounds().height / 2.f);
+		this->skill_e.setPosition(players[i].getPosition().x - 325.0f, players[i].getPosition().y + 150.0f);
+
 		this->cd_skill_3_Text.setString(to_string(int(skill_3TimeNow)));
 		this->cd_skill_3_Text.setOrigin(cd_skill_3_Text.getLocalBounds().width / 2.f, cd_skill_3_Text.getLocalBounds().height / 2.f);
 		this->cd_skill_3_Text.setPosition(players[i].getPosition().x - 250.0f, players[i].getPosition().y + 200.0f);
+
+		this->skill_r.setOrigin(skill_q.getLocalBounds().width / 2.f, skill_q.getLocalBounds().height / 2.f);
+		this->skill_r.setPosition(players[i].getPosition().x - 250.0f, players[i].getPosition().y + 150.0f);
+
+		this->Lock1.setPosition(players[i].getPosition().x - 400.0f, players[i].getPosition().y + 215.0f);
+		this->Lock2.setPosition(players[i].getPosition().x - 325.0f, players[i].getPosition().y + 215.0f);
+		this->Lock3.setPosition(players[i].getPosition().x - 250.0f, players[i].getPosition().y + 215.0f);
+
+		Lock1_Text.setString("5");
+		Lock1_Text.setOrigin(Lock1_Text.getLocalBounds().width / 2.f, Lock1_Text.getLocalBounds().height / 2.f);
+		Lock1_Text.setPosition(players[i].getPosition().x - 400.0f, players[i].getPosition().y + 215.0f);
+
+		Lock2_Text.setString("20");
+		Lock2_Text.setOrigin(Lock2_Text.getLocalBounds().width / 2.f, Lock2_Text.getLocalBounds().height / 2.f);
+		Lock2_Text.setPosition(players[i].getPosition().x - 325.0f, players[i].getPosition().y + 215.0f);
+
+		Lock3_Text.setString("50");
+		Lock3_Text.setOrigin(Lock3_Text.getLocalBounds().width / 2.f, Lock3_Text.getLocalBounds().height / 2.f);
+		Lock3_Text.setPosition(players[i].getPosition().x - 250.0f, players[i].getPosition().y + 215.0f);
+
+		time_t rawtime;
+		struct tm* timeinfo;
+
+		time(&rawtime);
+		timeinfo = localtime(&rawtime);
+
+		this->localTime.setString(asctime(timeinfo));
+		this->localTime.setOrigin(localTime.getLocalBounds().width / 2.f, localTime.getLocalBounds().height / 2.f);
+		this->localTime.setPosition(players[i].getPosition().x + 325.0f, players[i].getPosition().y + 230.0f);
 	}
 }
 
@@ -328,7 +416,16 @@ void Game::Update(float deltatime)
 
 	if (isAlive == 1) {
 
-		if (Keyboard::isKeyPressed(Keyboard::Q) && !pressSkill_1) pressSkill_1 = true;
+		if (Score < 5) this->skill_1.setColor(Color(255, 255, 255, 50));
+		else this->skill_1.setColor(Color(255, 255, 255, 225));
+
+		if (Score < 20) this->skill_2.setColor(Color(255, 255, 255, 50));
+		else this->skill_2.setColor(Color(255, 255, 255, 225));
+
+		if (Score < 50) this->skill_3.setColor(Color(255, 255, 255, 50));
+		else this->skill_3.setColor(Color(255, 255, 255, 225));
+
+		if (Keyboard::isKeyPressed(Keyboard::Q) && !pressSkill_1 && Score >= 5) pressSkill_1 = true;
 		if (pressSkill_1) {
 			this->skill_1.setColor(Color(255, 255, 255, 50));
 			skill_1TimeNow -= deltatime;
@@ -343,7 +440,7 @@ void Game::Update(float deltatime)
 			}
 		}
 
-		if (Keyboard::isKeyPressed(Keyboard::E) && !pressSkill_2) pressSkill_2 = true;
+		if (Keyboard::isKeyPressed(Keyboard::E) && !pressSkill_2 && Score >= 20) pressSkill_2 = true;
 		if (pressSkill_2) {
 			this->skill_2.setColor(Color(255, 255, 255, 50));
 			skill_2TimeNow -= deltatime;
@@ -358,7 +455,7 @@ void Game::Update(float deltatime)
 			}
 		}
 
-		if (Keyboard::isKeyPressed(Keyboard::R) && !pressSkill_3) pressSkill_3 = true;
+		if (Keyboard::isKeyPressed(Keyboard::R) && !pressSkill_3 && Score >= 50) pressSkill_3 = true;
 		if (pressSkill_3) {
 			this->skill_3.setColor(Color(255, 255, 255, 50));
 			skill_3TimeNow -= deltatime;
@@ -411,52 +508,13 @@ void Game::Update(float deltatime)
 			}
 		}
 
-		if (!showing) {
-			DelaytimeDel = 0.0f;
-			DelaytimeSpawn += deltatime;
-			if (DelaytimeSpawn >= DelaytimeSpawnMax) {
-
-				this->Boxtype = rand() % 3 + 1; int randx = rand() % 584 - 53; int randy = rand() % 555 - 4;
-
-				if (Boxtype == 1) {
-					this->CureBox.setPosition(randx, randy);
-					this->CureBoxShowing = 1;
-					this->BulletBoxShowing = 0;
-					this->ScoreBoxShowing = 0;
-				}
-				if (Boxtype == 2) {
-					this->BulletBox.setPosition(randx, randy);
-					this->CureBoxShowing = 0;
-					this->BulletBoxShowing = 1;
-					this->ScoreBoxShowing = 0;
-				}
-				if (Boxtype == 3) {
-					this->ScoreBox.setPosition(randx, randy);
-					this->CureBoxShowing = 0;
-					this->BulletBoxShowing = 0;
-					this->ScoreBoxShowing = 1;
-				}
-				showing = 1;
-				DelaytimeSpawn -= DelaytimeSpawnMax;
-			}
-		}
-
-		if (showing) {
-			DelaytimeSpawn = 0.0f;
-			DelaytimeDel += deltatime;
-			if (DelaytimeDel >= DelaytimeDelMax) {
-				showing = 0;
-				CureBoxShowing = 0;
-				BulletBoxShowing = 0;
-				ScoreBoxShowing = 0;
-				DelaytimeDel -= DelaytimeDelMax;
-			}
-		}
-
 		if (usingSkill_3) enemies.clear();
 
 		//All Character
+		Vector2f position_Player;
 		for (size_t i = 0; i < this->players.size(); i++) {
+
+			position_Player = players[i].getPosition();
 
 			if (players[i].gethp() <= 0) isAlive = 0;
 			if (usingSkill_1) players[i].SetColorOpa();
@@ -541,7 +599,7 @@ void Game::Update(float deltatime)
 
 			//Enemy Update
 			for (int j = 0; j < this->enemies.size(); j++) {
-				
+
 				if (!usingSkill_2) this->enemies[j].Update(players[i].getPosition(), deltatime);
 
 				//Update Score
@@ -604,20 +662,73 @@ void Game::Update(float deltatime)
 				}
 			}
 		}
+
+		if (!showing) {
+			DelaytimeDel = 0.0f;
+			DelaytimeSpawn += deltatime;
+			if (DelaytimeSpawn >= DelaytimeSpawnMax) {
+
+				this->Boxtype = rand() % 3 + 1;
+				int quadrant_rand, randx, randy;
+				if (position_Player.x < 240 && position_Player.y < 272.5f) quadrant_rand = rand() % 3 + 2;
+				if (position_Player.x > 240 && position_Player.y < 272.5f) quadrant_rand = (rand() % 3 == 0) ? 1 : rand() % 2 + 3;
+				if (position_Player.x > 240 && position_Player.y > 272.5f) quadrant_rand = (rand() % 3 == 0) ? 4 : rand() % 2 + 1;
+				if (position_Player.x < 240 && position_Player.y > 272.5f) quadrant_rand = rand() % 3 + 1;
+
+				randx = rand() % 290; randy = rand() % 272;
+				if (quadrant_rand == 1) randx -= 50, randy;
+				if (quadrant_rand == 2) randx += 240, randy;
+				if (quadrant_rand == 3) randx += 240, randy += 272.5;
+				if (quadrant_rand == 4) randx -= 50, randy += 272.5;
+
+				if (Boxtype == 1) {
+					this->CureBox.setPosition(randx, randy);
+					this->CureBoxShowing = 1;
+					this->BulletBoxShowing = 0;
+					this->ScoreBoxShowing = 0;
+				}
+				if (Boxtype == 2) {
+					this->BulletBox.setPosition(randx, randy);
+					this->CureBoxShowing = 0;
+					this->BulletBoxShowing = 1;
+					this->ScoreBoxShowing = 0;
+				}
+				if (Boxtype == 3) {
+					this->ScoreBox.setPosition(randx, randy);
+					this->CureBoxShowing = 0;
+					this->BulletBoxShowing = 0;
+					this->ScoreBoxShowing = 1;
+				}
+				showing = 1;
+				DelaytimeSpawn -= DelaytimeSpawnMax;
+			}
+		}
+
+		if (showing) {
+			DelaytimeSpawn = 0.0f;
+			DelaytimeDel += deltatime;
+			if (DelaytimeDel >= DelaytimeDelMax) {
+				showing = 0;
+				CureBoxShowing = 0;
+				BulletBoxShowing = 0;
+				ScoreBoxShowing = 0;
+				DelaytimeDel -= DelaytimeDelMax;
+			}
+		}
 	}
 }
 
 void Game::DrawUI()
 {
-	
+
 }
 
 
-void Game::Draw(RenderWindow &window)
-{	
+void Game::Draw(RenderWindow& window)
+{
 	this->window->clear();
 	background.Draw_map(*this->window);
-	
+
 	if (showing == 1 && Boxtype == 1) window.draw(CureBox);
 	if (showing == 1 && Boxtype == 2) window.draw(BulletBox);
 	if (showing == 1 && Boxtype == 3) window.draw(ScoreBox);
@@ -657,7 +768,21 @@ void Game::Draw(RenderWindow &window)
 		this->window->draw(this->skill_2);
 		this->window->draw(this->skill_3);
 
-		if(isBlackchole) this->window->draw(this->blackhole);
+		this->window->draw(this->skill_q);
+		this->window->draw(this->skill_e);
+		this->window->draw(this->skill_r);
+
+		if (Score < 5) this->window->draw(this->Lock1);
+		if (Score < 20) this->window->draw(this->Lock2);
+		if (Score < 50) this->window->draw(this->Lock3);
+
+		if (Score < 5) this->window->draw(this->Lock1_Text);
+		if (Score < 20) this->window->draw(this->Lock2_Text);
+		if (Score < 50) this->window->draw(this->Lock3_Text);
+
+		//this->window->draw(localTime);
+
+		if (isBlackchole) this->window->draw(this->blackhole);
 
 		if (pressSkill_1) this->window->draw(this->cd_skill_1_Text);
 		if (pressSkill_2) this->window->draw(this->cd_skill_2_Text);
@@ -665,7 +790,7 @@ void Game::Draw(RenderWindow &window)
 
 		if (isAlive == 1) this->window->draw(this->mouseCursor);
 	}
-	
+
 	if (isAlive == 0) {
 		this->window->draw(gameover);
 		this->window->draw(home_button);
@@ -674,7 +799,7 @@ void Game::Draw(RenderWindow &window)
 
 	else window.setMouseCursorVisible(false);
 
-	if (isAlive == 0 && ch == 1) ScoreBoard().WriteFile(playerName, Score), ch = 0; 
+	if (isAlive == 0 && ch == 1) ScoreBoard().WriteFile(playerName, Score), ch = 0;
 	ButtonUI(window);
 	this->window->display();
 }
@@ -684,7 +809,7 @@ void Game::ResetGame()
 	for (int i = 0; i < players.size(); i++)  players[i].getBullets().clear();
 	players.clear(); enemies.clear();
 
-	this->players.push_back(Player(&playerTexture, &bulletTexture, Vector2u(4, 4), 0.2f, 
+	this->players.push_back(Player(&playerTexture, &bulletTexture, Vector2u(4, 4), 0.2f,
 		Vector2f(250.0f, 275.0f), 10, 10, 1, 1, 25));
 
 	this->isAlive = 1;
