@@ -21,6 +21,7 @@ private:
 	Text InputName_text;
 	Text PlayerName;
 	Text OnlyEight;
+	Text PuNename;
 	String Name;
 
 	//Sprite

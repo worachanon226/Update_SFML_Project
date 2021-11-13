@@ -27,6 +27,13 @@ Mainmenu::Mainmenu(RenderWindow* window, View& view)
 
 	#pragma region Button
 
+	//PuNe Name
+	PuNename.setFont(font_Pixeboy);
+	PuNename.setString("64010755 Worachanon Chaiprasertsud");
+	PuNename.setCharacterSize(60);
+	PuNename.setFillColor(Color::Black);
+	PuNename.setPosition(650.f, 830.f);
+
 	//Mainmenu_Play
 	this->Mainmenu_PlayTex.loadFromFile("Texture/Box/Mainmenu_Play.png");
 	this->Mainmenu_Play.setTexture(Mainmenu_PlayTex);
@@ -201,6 +208,7 @@ void Mainmenu::Draw(RenderWindow& window)
 	this->window->draw(wallpaper);
 
 	//Text Block
+	this->window->draw(PuNename);
 	this->window->draw(Mainmenu_Play);
 	this->window->draw(Mainmenu_Leader);
 	this->window->draw(Mainmenu_Quit);
