@@ -12,6 +12,9 @@ private:
 	RenderWindow* window;
 	View view;
 
+	Sprite mouseCursor;
+	Texture mouseCursorTex;
+
 	Font font_Pixeboy;
 	
 	//Score

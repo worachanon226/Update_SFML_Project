@@ -22,6 +22,11 @@ PauseMenu::PauseMenu(RenderWindow* window, View& view)
 	this->scoreback.setOrigin(scorebackTex.getSize().x / 2.0f, scorebackTex.getSize().y / 2.0f);
 	this->scoreback.setScale(0.4f, 0.4f);
 
+	this->mouseCursorTex.loadFromFile("Texture/Mouse/MainCursor.png");
+	this->mouseCursor.setTexture(mouseCursorTex);
+	this->mouseCursor.setOrigin(Vector2f(mouseCursorTex.getSize().x / 2, mouseCursorTex.getSize().y / 2));
+	this->mouseCursor.setScale(0.05f, 0.05f);
+
 	//PlayerName Back
 	this->playerNameBackTex.loadFromFile("Texture/Box/Button.png");
 	this->playerNameBack.setTexture(playerNameBackTex);
@@ -81,6 +86,8 @@ void PauseMenu::Update(RenderWindow& window, Vector2f position)
 	// convert it to world coordinates
 	sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
 	
+	this->mouseCursor.setPosition(worldPos);
+
 	if (play_button.getGlobalBounds().contains(worldPos.x, worldPos.y))
 	{
 		this->play_button.setScale(0.36f, 0.36f);
@@ -146,6 +153,8 @@ void PauseMenu::Draw(RenderWindow& window)
 	this->window->draw(this->score_text);
 	this->window->draw(this->playerNameBack);
 	this->window->draw(this->playerNameText);
+
+	this->window->draw(mouseCursor);
 
 	this->window->display();
 }

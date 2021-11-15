@@ -1,5 +1,5 @@
 admin 9999
-w 292
-ddd 187
-arjan 161
-ddd 128
+tester 39
+tester 12
+w 0
+qq 0

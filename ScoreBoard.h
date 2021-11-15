@@ -23,6 +23,9 @@ private:
     Text playerName[5];
     Text playerScore[5];
 
+    Sprite mouseCursor;
+    Texture mouseCursorTex;
+
     Texture wallpaperTex;
     Sprite wallpaper;
 

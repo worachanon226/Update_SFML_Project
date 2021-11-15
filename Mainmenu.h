@@ -11,6 +11,9 @@ private:
 	RenderWindow* window;
 	View view;
 
+	Sprite mouseCursor;
+	Texture mouseCursorTex;
+
 	//Text & Font
 	Font font_Pixeboy;
 	Text mainmenu_text;

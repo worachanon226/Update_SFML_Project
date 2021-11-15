@@ -14,6 +14,11 @@ ScoreBoard::ScoreBoard()
     this->CloseButton.setScale(0.8f, 0.8f);
     this->CloseButton.setOrigin(Vector2f(CloseButtonTex.getSize().x / 2, CloseButtonTex.getSize().y / 2));
     this->CloseButton.setPosition(1450.0f,-50.0f);
+
+    this->mouseCursorTex.loadFromFile("Texture/Mouse/MainCursor.png");
+    this->mouseCursor.setTexture(mouseCursorTex);
+    this->mouseCursor.setOrigin(Vector2f(mouseCursorTex.getSize().x / 2, mouseCursorTex.getSize().y / 2));
+    this->mouseCursor.setScale(0.1f, 0.1f);
 }
 
 void ScoreBoard::ReadFile()
@@ -53,6 +58,8 @@ void ScoreBoard::Update(RenderWindow& window, Event event)
 
     sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
 
+    this->mouseCursor.setPosition(worldPos);
+
     if (CloseButton.getGlobalBounds().contains(worldPos.x, worldPos.y))
     {
         this->CloseButton.setScale(0.9f, 0.9f);
@@ -91,5 +98,6 @@ void ScoreBoard::Draw(RenderWindow& window)
         window.draw(playerName[i]);
         window.draw(playerScore[i]);
     }
+    window.draw(mouseCursor);
     window.display();
 }

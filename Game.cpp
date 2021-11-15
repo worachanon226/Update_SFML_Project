@@ -787,20 +787,16 @@ void Game::Draw(RenderWindow& window)
 		if (pressSkill_1) this->window->draw(this->cd_skill_1_Text);
 		if (pressSkill_2) this->window->draw(this->cd_skill_2_Text);
 		if (pressSkill_3) this->window->draw(this->cd_skill_3_Text);
-
-		if (isAlive == 1) this->window->draw(this->mouseCursor);
 	}
 
 	if (isAlive == 0) {
 		this->window->draw(gameover);
 		this->window->draw(home_button);
-		window.setMouseCursorVisible(true);
 	}
-
-	else window.setMouseCursorVisible(false);
 
 	if (isAlive == 0 && ch == 1) ScoreBoard().WriteFile(playerName, Score), ch = 0;
 	ButtonUI(window);
+	this->window->draw(this->mouseCursor);
 	this->window->display();
 }
 

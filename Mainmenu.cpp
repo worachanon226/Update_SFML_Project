@@ -18,6 +18,11 @@ Mainmenu::Mainmenu(RenderWindow* window, View& view)
 
 #pragma region UI
 
+	this->mouseCursorTex.loadFromFile("Texture/Mouse/MainCursor.png");
+	this->mouseCursor.setTexture(mouseCursorTex);
+	this->mouseCursor.setOrigin(Vector2f(mouseCursorTex.getSize().x / 2, mouseCursorTex.getSize().y / 2));
+	this->mouseCursor.setScale(0.1f, 0.1f);
+
 	//Wallpaper
 	this->wallpaperTex.loadFromFile("Texture/Wallpaper/Mainmenu.png");
 	this->wallpaper.setTexture(wallpaperTex);
@@ -118,6 +123,7 @@ void Mainmenu::Update(RenderWindow& window,Event event, float deltatime)
 	sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
 
 	this->PlayerName.setOrigin(PlayerName.getLocalBounds().width / 2.0f, PlayerName.getLocalBounds().height / 2.0f);
+	this->mouseCursor.setPosition(worldPos);
 
 	if (IsNameInput == 1) {
 		
@@ -228,5 +234,6 @@ void Mainmenu::Draw(RenderWindow& window)
 		this->window->draw(play_button);
 		this->window->draw(CloseInputNameButton);
 	}
+	this->window->draw(mouseCursor);
 	this->window->display();
 }

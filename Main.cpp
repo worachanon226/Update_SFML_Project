@@ -49,11 +49,10 @@ int main()
         }
 
         //if (Focus == true) {
-
+        window.setMouseCursorVisible(false);
             if (MenuGame == true && PauseGame == true) {
                 if (!playMainSound) { mainSound.play(); mainSound.setLoop(true); playMainSound = true; }
                 #pragma region Other
-                window.setMouseCursorVisible(true);
                 game.ResetGame();       game.resetPause();
                 pausemenu.resetPlay();  pausemenu.resetHome();
                 scoreboard.settoMenu(); game.resetHome();
@@ -98,7 +97,6 @@ int main()
             if (PauseGame == true && MenuGame == false) {
                 gameSound.stop(); playGameSound = false;
                 #pragma region Other
-                window.setMouseCursorVisible(true);
                 window.clear();
                 game.resetPause();
                 pausemenu.Update(window, PlayerPosBeforePause);
