@@ -26,9 +26,9 @@ void ScoreBoard::ReadFile()
     this->fp = fopen("./Resource/Score.txt", "r");
     for (int i = 0; i < 5; i++)
     {
-        fscanf(fp, "%s", &temp);
-        name[i] = temp;
+        fscanf(fp, "%s", &temp); name[i] = temp;
         fscanf(fp, "%d", &score[i]);
+
         this->userScore.push_back(make_pair(this->score[i], this->name[i]));
     }
 }
@@ -43,8 +43,9 @@ void ScoreBoard::WriteFile(string name, unsigned int score)
     fclose(this->fp);
 
     fopen("./Resource/Score.txt", "w");
-    for (int i = 5; i >= 1; i--)
+    for (int i = 5; i > 0; i--)
     {
+        //cout << userScore[i].second.c_str() << " " << userScore[i].first << endl;
         strcpy(temp, userScore[i].second.c_str());
         fprintf(fp, "%s %d\n", temp, userScore[i].first);
     }
@@ -54,6 +55,26 @@ void ScoreBoard::WriteFile(string name, unsigned int score)
 
 void ScoreBoard::Update(RenderWindow& window, Event event)
 {
+    ReadFile(); fclose(this->fp);
+    for (int i = 0; i < 5; i++) {
+        strcpy(temp, userScore[i].second.c_str());
+        playerName[i].setFont(this->font);
+        playerName[i].setFillColor(Color::Black);
+        playerName[i].setCharacterSize(100);
+        playerName[i].setPosition(100.0f, 150.0f + (i * 140));
+        playerName[i].setString(to_string(i + 1) + ". " + name[i]);
+        playerName[i].setOrigin(0, playerName[i].getLocalBounds().height);
+
+        playerScore[i].setFont(this->font);
+        playerScore[i].setFillColor(Color::Black);
+        playerScore[i].setCharacterSize(100);
+        playerScore[i].setPosition(1150.0f, 150.0f + (i * 140));
+        playerScore[i].setString(to_string(score[i]));
+        playerScore[i].setOrigin(playerScore[i].getLocalBounds().width, playerScore[i].getLocalBounds().height);
+    
+        //cout << "Show: " << name[i] << " " << score[i] << endl;
+    }
+
     sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
 
     sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
@@ -69,29 +90,11 @@ void ScoreBoard::Update(RenderWindow& window, Event event)
     else {
         this->CloseButton.setScale(0.8f, 0.8f);
     }
-
-    ReadFile(); fclose(this->fp);
-    for (int i = 0; i < 5; i++) {
-        strcpy(temp, userScore[i].second.c_str());
-        playerName[i].setFont(this->font);
-        playerName[i].setFillColor(Color::Black);
-        playerName[i].setCharacterSize(100);
-        playerName[i].setPosition(100.0f, 150.0f + (i * 140));
-        playerName[i].setString(to_string(i + 1) + ". " + name[i]);
-        playerName[i].setOrigin(0, playerName[i].getLocalBounds().height);
-
-        playerScore[i].setFont(this->font);
-        playerScore[i].setFillColor(Color::Black);
-        playerScore[i].setCharacterSize(100);
-        playerScore[i].setPosition(1150.0f, 150.0f + (i * 140));
-        playerScore[i].setString(to_string(userScore[i].first));
-        playerScore[i].setOrigin(playerScore[i].getLocalBounds().width, playerScore[i].getLocalBounds().height);
-    }
-
 }
 
 void ScoreBoard::Draw(RenderWindow& window)
 {
+    window.clear();
     window.draw(this->wallpaper);
     window.draw(CloseButton);
     for (int i = 0; i < 5; i++) {

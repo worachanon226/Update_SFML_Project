@@ -1,5 +1,5 @@
 admin 9999
-tester 39
-tester 12
-w 0
-qq 0
+three 3
+two 2
+one 1
+none 0

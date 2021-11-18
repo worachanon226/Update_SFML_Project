@@ -613,8 +613,7 @@ void Game::Update(float deltatime)
 				}
 
 				if (players[i].getGlobalBounds().intersects(enemies[j].getGlobalBounds()) && !usingSkill_1) {
-					this->players.push_back(Player(&playerTexture, &bulletTexture, Vector2u(4, 4), 0.2f, players[i].getPosition(), players[i].gethp() - enemies[j].getDamage(), 10, 0, 1, players[i].getShootTimerMax()));
-					this->players.erase(this->players.begin() + i);
+					players[i].SetHp(enemies[j].getHp());
 					this->enemies.erase(this->enemies.begin() + j);
 					break;
 				}

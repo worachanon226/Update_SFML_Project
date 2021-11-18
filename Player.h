@@ -56,6 +56,8 @@ public:
 	inline const Vector2f& getPosition()const { return this->sprite.getPosition(); }
 	inline const FloatRect& getGlobalBounds()const { return this->sprite.getGlobalBounds(); }
 	
+	void SetHp(int minus) { this->hp -= minus; }
+
 	void SetColorOpa() { this->sprite.setColor(Color(255, 255, 255, 100)); }
 	void SetColor() { this->sprite.setColor(Color(255, 255, 255, 225)); }
 	void Draw(RenderWindow& window);
